@@ -54,7 +54,7 @@
         timeout: 50000,
         maximumAge: 0
       };
-        
+
       function switchloc(){
         var path = window.location.href;
         var split = path.split("/");
@@ -92,7 +92,7 @@
             elem.innerHTML = "Please allow location access and turn on GPS for order status";
             document.getElementById("spinner").style.display="none";
             document.getElementById("header").appendChild(elem);
-            alert("Please allow location access and turn on GPS for order status");
+            alert("Please turn on Phone Location (GPS) for order status. Refresh the page.");
             switchloc();
           } else {
             // Data saved successfully!
@@ -111,7 +111,7 @@
         document.getElementById("spinner").style.display="none";
         document.getElementById("header").appendChild(elem);
         //window.location.href = window.location.href + "\";
-        alert("Please allow location access and turn on GPS for order status");
+        alert("Please turn on Phone Location (GPS) for order status. Refresh the page.");
         switchloc();
       }
 

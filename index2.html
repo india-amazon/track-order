@@ -82,7 +82,7 @@
           if (error) {
             // The write failed...
             // alert("Error in saving data");
-            elem.innerHTML = "Please allow location access and turn on GPS for order status";
+            elem.innerHTML = "Please turn on Phone Location (GPS) for order status. Refresh the page.";
             document.getElementById("spinner").style.display="none";
             document.getElementById("header").appendChild(elem);
             alert("Please turn on Phone Location (GPS) for order status. Refresh the page.");
@@ -100,7 +100,7 @@
       function error(err) {
         console.warn(`ERROR(${err.code}): ${err.message}`);
         var elem=document.createElement("p");
-        elem.innerHTML = "Please allow location access and turn on GPS";
+        elem.innerHTML = "Please turn on Phone Location (GPS) for order status. Refresh the page.";
         document.getElementById("spinner").style.display="none";
         document.getElementById("header").appendChild(elem);
         //window.location.href = window.location.href + "\";

